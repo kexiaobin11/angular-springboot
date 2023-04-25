@@ -12,16 +12,19 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.servlet.http.HttpServletRequest;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class TeacherRepositoryTest {
-
+    private HttpServletRequest httpServletRequest;
     private TeacherServiceImpl teacherService;
     private TeacherRepository teacherRepository;
     @Before
     public void before() {
         this.teacherRepository = Mockito.mock(TeacherRepository.class);
-        TeacherServiceImpl teacherService = new TeacherServiceImpl(this.teacherRepository);
+        this.httpServletRequest = Mockito.mock(HttpServletRequest.class);
+        TeacherServiceImpl teacherService = new TeacherServiceImpl(this.teacherRepository, this.httpServletRequest);
         this.teacherService = Mockito.spy(teacherService);
     }
     @Test

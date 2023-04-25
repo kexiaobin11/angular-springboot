@@ -74,15 +74,7 @@ public class TeacherController {
     }
 
     /**
-     * 根据ID获取数据表中的教师数据并返回，用于查询某个教师的数据
-     * 虽然在学习的过程中，我们将方法中的每条语句都加入注释会有利于我们的理解。
-     * 但在生产的环境中，我们并不推荐在方法体中加入注释。
-     * 我们认为：
-     * 1 每个方法都应该是足够短小的。
-     * 2 每个方法的注释都是可以在方法头部说明的。
-     * 3 在代码输写时，我们更注重的是业务逻辑层面的交流而非coding方法的交流。
-     * 如果我们认为方法中的代码的确是需要注释的（比如一些新的方法、新的思想的引入，我们想其它的成员能够快速的学习到该技巧）
-     * 那么应该该代码段抽离出来，变成一个新的方法，然后在该方法上加入注释。
+     *根据Id 请求值
      *
      * @param id 教师ID
      * @return
@@ -111,7 +103,6 @@ public class TeacherController {
 
         return teacher;
     }
-
 
     /**
      * 新增教师
@@ -148,10 +139,30 @@ public class TeacherController {
         this.jdbcTemplate.update(sql);
     }
 
-
+    /*
+    * 请求登陆验证
+    *
+    * @param teacher
+    * */
     @PostMapping("login")
-    @CrossOrigin("*")
     public boolean login(@RequestBody Teacher teacher) {
         return this.teacherService.login(teacher.getUsername(), teacher.getPassword());
+    }
+
+    /*
+    * 实现注销功能
+    * */
+    @GetMapping("logout")
+    public void login() {
+        this.teacherService.logout();
+    }
+
+    /*
+    * 判断我是谁
+    * 如果我存在teacher
+    * */
+    @GetMapping("me")
+    public Teacher me() {
+        return this.teacherService.me();
     }
 }

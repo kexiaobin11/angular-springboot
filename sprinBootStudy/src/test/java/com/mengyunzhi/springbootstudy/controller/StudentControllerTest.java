@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.nio.charset.Charset;
 import java.util.*;
 
 @SpringBootTest
@@ -148,7 +149,6 @@ public class StudentControllerTest {
 
     @Test
     public void save() throws Exception {
-        logger.info("准备输入数据");
         String url = "/Student";
         JSONObject studentJsonObject = new JSONObject();
         JSONObject klassJsonObject = new JSONObject();
@@ -158,7 +158,6 @@ public class StudentControllerTest {
         klassJsonObject.put("id", -1);
         studentJsonObject.put("klass", klassJsonObject);
 
-        logger.info("准备服务层被调用后的返回数据");
         Student returnStudent = new Student();
         returnStudent.setId(1L);
         returnStudent.setSno("测试返回学号");
@@ -171,7 +170,6 @@ public class StudentControllerTest {
                         Mockito.any(Student.class)))
                 .thenReturn(returnStudent);
 
-        logger.info("发起请求");
         MvcResult mvcResult = this.mockMvc.perform(
                 MockMvcRequestBuilders.post(url)
                         .content(studentJsonObject.toString())
@@ -180,7 +178,6 @@ public class StudentControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
 
-        logger.info("新建参数捕获器");
         ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
         Mockito.verify(studentService).save(studentArgumentCaptor.capture());
         Student passedStudent = studentArgumentCaptor.getValue();
@@ -192,7 +189,8 @@ public class StudentControllerTest {
         Assertions.assertThat(passedStudent.getKlass().getId()).isEqualTo(-1L);
 
         logger.info("获取返回的值并断言此值与我们模拟的返回值相同");
-        String stringReturn = mvcResult.getResponse().getContentAsString();
+        String stringReturn = mvcResult.getResponse().getContentAsString(Charset.forName("UTF-8"));
+        logger.info("获得MockResult的值" + stringReturn);
         DocumentContext documentContext = JsonPath.parse(stringReturn);
         LinkedHashMap studentHashMap = documentContext.json();
         Assertions.assertThat(studentHashMap.get("id")).isEqualTo(1);
