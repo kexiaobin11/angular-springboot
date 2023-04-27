@@ -22,12 +22,15 @@ export class NavComponent implements OnInit {
     this.menus.push({url: 'teacher', name: '教师管理'});
     this.menus.push({url: 'klass', name: '班级管理'});
     this.menus.push({url: 'student', name: '学生管理'});
+    this.menus.push({url: 'personalCenter', name: '个人中心'});
   }
   onSubmit(): void {
   }
   onLogout(): void {
-    this.teacherService.setIsLogin(false);
-    console.log('onLogout');
+    this.teacherService.logout().subscribe( () => {
+      this.teacherService.setIsLogin(false);
+    });
+
   }
 
 }

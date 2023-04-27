@@ -5,6 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';;
 import {FormTest} from '../testing/FormTest';
 import {TeacherService} from '../service/teacher.service';
 import {TestModule} from '../test/test.module';
+import {of} from 'rxjs';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -37,9 +38,10 @@ describe('NavComponent', () => {
     const service = TestBed.get(TeacherService);
     console.log(service);
   });
-  fit('onLogout', () => {
+  it('onLogout', () => {
     const service = TestBed.get(TeacherService) as TeacherService;
     spyOn(service, 'setIsLogin');
+    spyOn(service, 'logout').and.returnValue(of(null));
     component.onLogout();
     expect(service.setIsLogin).toHaveBeenCalledWith(false);
     console.log(service);

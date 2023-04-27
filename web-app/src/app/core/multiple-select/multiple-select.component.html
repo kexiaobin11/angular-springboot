@@ -1,0 +1,6 @@
+<div>
+  <label class="label" *ngFor="let data of list$ | async">
+    <input type="checkbox"
+           (change)="onChange(data)"> {{data.name}}
+  </label>
+</div>

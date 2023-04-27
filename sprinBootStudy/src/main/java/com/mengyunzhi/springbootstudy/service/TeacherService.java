@@ -5,7 +5,8 @@ import com.mengyunzhi.springbootstudy.entity.Teacher;
 /**
  * @author kexiaobin
  */
-public interface TeacherSerivce {
+public interface TeacherService {
+
     /**
      * 用户登录
      * @param username 用户名
@@ -13,6 +14,19 @@ public interface TeacherSerivce {
      * @return 成功 true
      */
     boolean login(String username, String password);
+
+    /**
+     * 用户注销
+     * 系统可以根据HttpServletRequest获取到header中的令牌令牌
+     * 所以注销方法不需要传入任何参数
+     */
+    void logout();
+
+    /**
+     * 我是谁
+     * @return 当前登录用户。用户未登录则返回null
+     */
+    Teacher me();
 
     /**
      * 验证密码的有效性
@@ -23,13 +37,8 @@ public interface TeacherSerivce {
     boolean validatePassword(Teacher teacher, String password);
 
     /*
-    * 实现注销功能
+    *判断用户是否登陆
+    * @param authToken 认证
     * */
-    void logout();
-
-    /*
-    * 判断是谁
-    * @return 当前登录用户。用户未登录则返回null
-    * */
-    Teacher me();
+    boolean isLogin(String authToken);
 }

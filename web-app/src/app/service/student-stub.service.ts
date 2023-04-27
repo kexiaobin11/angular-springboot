@@ -4,6 +4,7 @@
 import {Observable, of} from 'rxjs';
 import {Student} from '../norm/entity/student';
 import {Klass} from '../norm/entity/Klass';
+import {Teacher} from '../norm/entity/Teacher';
 
 export class StudentStubService {
 

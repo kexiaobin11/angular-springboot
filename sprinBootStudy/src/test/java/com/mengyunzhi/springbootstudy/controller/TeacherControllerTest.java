@@ -1,6 +1,6 @@
 package com.mengyunzhi.springbootstudy.controller;
 
-import com.mengyunzhi.springbootstudy.service.TeacherSerivce;
+import com.mengyunzhi.springbootstudy.service.TeacherService;
 import net.minidev.json.JSONObject;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ public class TeacherControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    TeacherSerivce teacherService;
+    TeacherService teacherService;
 
     @Test
     public void login() throws Exception {

@@ -12,7 +12,10 @@ import {CoreModule} from '../core/core.module';
  * 班级模块
  */
 @NgModule({
-  declarations: [IndexComponent, AddComponent, EditComponent, TeacherSelectComponent],
+    declarations: [IndexComponent, AddComponent, EditComponent, TeacherSelectComponent],
+    exports: [
+        TeacherSelectComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,

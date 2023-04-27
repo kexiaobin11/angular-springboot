@@ -48,7 +48,7 @@ describe('LoginComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
   /*当 login() 方法第一次被调用时，它会返回一个值为 true 的 Observable 对象，第二次调用返回 false。*/
-  fit('onSubmit', () => {
+  it('onSubmit', () => {
     const teacherService = TestBed.get(TeacherService) as TeacherService;
     spyOn(teacherService, 'login').and.returnValues(of(true), of(false));
     spyOn(teacherService, 'setIsLogin');

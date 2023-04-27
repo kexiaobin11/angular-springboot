@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './login/login.component';
 import {AuthTokenInterceptor} from './core/auth-token-interceptor';
+import { PersonalCenterComponent } from './personal-center/personal-center.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {AuthTokenInterceptor} from './core/auth-token-interceptor';
     NavComponent,
     FooterComponent,
     WelcomeComponent,
-    LoginComponent
+    LoginComponent,
+    PersonalCenterComponent
   ],
     imports: [
         BrowserModule,

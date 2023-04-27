@@ -5,6 +5,7 @@ import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {LoginComponent} from './login/login.component';
+import {PersonalCenterComponent} from './personal-center/personal-center.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,14 @@ const routes: Routes = [
   {
     path: 'student',
     loadChildren: () => import('./student/student.module').then(mod => mod.StudentModule)
+  },
+  {
+    path: 'personalCenter',
+    component: PersonalCenterComponent
+  },
+  {
+    path: 'course',
+    loadChildren: () => import ('./course/course.module').then( mod => mod.CourseModule)
   }
 ];
 

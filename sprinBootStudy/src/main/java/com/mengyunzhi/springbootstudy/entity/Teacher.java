@@ -1,9 +1,6 @@
 package com.mengyunzhi.springbootstudy.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 教师模型，用于更方便的存储查表后返回的数据
