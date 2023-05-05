@@ -17,7 +17,7 @@ export class StudentService {
    */
   page(params: { name?: string, sno?: string, klassId?: number, page?: number, size?: number }):
     Observable<{ totalPages: number, content: Array<Student> }> {
-    const url = 'http://localhost:8080/Student';
+    const url = '/Student';
 
     /* 设置默认值 */
     if (params.page === undefined) {

@@ -77,7 +77,7 @@ describe('Klass/AddComponent', () => {
     httpTestingController = TestBed.get(HttpTestingController);
     expect(component).toBeTruthy();
     component.name.setValue('test3');
-    component.teacher = new Teacher(2, null, null, null);
+    component.teacher = new Teacher(null);
     fixture.whenStable().then(() => {
       const debugElement: DebugElement = fixture.debugElement;
       const submitButtonElement = debugElement.query(By.css('button'));

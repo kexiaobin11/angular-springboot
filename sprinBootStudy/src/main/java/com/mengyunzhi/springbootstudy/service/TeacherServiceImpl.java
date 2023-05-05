@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,35 @@ public class TeacherServiceImpl implements TeacherService {
     public TeacherServiceImpl(TeacherRepository teacherRepository, HttpServletRequest request) {
         this.teacherRepository = teacherRepository;
         this.request = request;
+    }
+
+    @Override
+    public List<Teacher> getAll() {
+        return (List<Teacher>) this.teacherRepository.findAll();
+    }
+
+    @Override
+    public Teacher getById(Long id) {
+        return this.teacherRepository.findById(id).get();
+    }
+    /*
+    * 保存信息
+    * */
+    @Override
+    public void save(Teacher teacher) {
+        this.teacherRepository.save(teacher);
+    }
+    /*
+    * 修改信息
+    * */
+    @Override
+    public void update(Long id, Teacher teacher) {
+        Teacher oldTeacher = this.teacherRepository.findById(id).get();
+        oldTeacher.setUsername(teacher.getUsername());
+        oldTeacher.setName(teacher.getName());
+        oldTeacher.setEmail(teacher.getEmail());
+        oldTeacher.setSex(teacher.getSex());
+        this.teacherRepository.save(oldTeacher);
     }
 
     /*
@@ -87,7 +117,6 @@ public class TeacherServiceImpl implements TeacherService {
         if (teacher == null || teacher.getPassword() == null || password == null) {
             return false;
         }
-
         return teacher.getPassword().equals(password);
     }
 

@@ -15,6 +15,6 @@ export class TeacherStubService {
   }
 
   me(): Observable<Teacher> {
-    return of(new Teacher(1, 'username', 'name'));
+    return of(new Teacher(null, null, null));
   }
 }

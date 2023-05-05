@@ -1,11 +1,14 @@
 package com.mengyunzhi.springbootstudy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 /**
  * 教师模型，用于更方便的存储查表后返回的数据
  */
 @Entity
+@Data
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

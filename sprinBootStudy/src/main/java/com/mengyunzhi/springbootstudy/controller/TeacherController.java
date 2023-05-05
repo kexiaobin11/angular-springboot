@@ -34,26 +34,7 @@ public class TeacherController {
 
     @GetMapping
     public List<Teacher> getAll() {
-        List<Teacher> teachers = new ArrayList<>();
-        RowCallbackHandler rowCallbackHandler = new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet resultSet) throws SQLException {
-                Teacher teacher = new Teacher();
-                teacher.setId(resultSet.getLong("id"));
-                teacher.setName(resultSet.getString("name"));
-                teacher.setSex(resultSet.getBoolean("sex"));
-                teacher.setUsername(resultSet.getString("username"));
-                teacher.setEmail(resultSet.getString("email"));
-                teacher.setCreateTime(resultSet.getLong("create_time"));
-                teacher.setUpdateTime(resultSet.getLong("update_time"));
-                teachers.add(teacher);
-            }
-        };
-
-        String query = "select id, name, sex, username, email, create_time, update_time from teacher";
-
-        jdbcTemplate.query(query, rowCallbackHandler);
-        return teachers;
+        return this.teacherService.getAll();
     }
 
     /**
@@ -64,45 +45,21 @@ public class TeacherController {
      */
     @GetMapping("{id}")
     public Teacher getById(@PathVariable Long id) {
-        Teacher teacher = new Teacher();
-
-        RowCallbackHandler rowCallbackHandler = new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet resultSet) throws SQLException {
-                teacher.setId(resultSet.getLong("id"));
-                teacher.setName(resultSet.getString("name"));
-                teacher.setSex(resultSet.getBoolean("sex"));
-                teacher.setUsername(resultSet.getString("username"));
-                teacher.setEmail(resultSet.getString("email"));
-                teacher.setCreateTime(resultSet.getLong("create_time"));
-                teacher.setUpdateTime(resultSet.getLong("update_time"));
-            }
-        };
-
-        String query = String.format("select id, name, sex, username, email, create_time, update_time from teacher where id = %d", id);
-
-        jdbcTemplate.query(query, rowCallbackHandler);
-
-        return teacher;
+        return this.teacherService.getById(id);
     }
 
+    /*
+    * 添加数据时候设置默认密码
+    * */
     @PostMapping
     public void save(@RequestBody Teacher teacher) {
-        String sql = String.format(
-                "insert into `teacher` (`name`, `username`, `email`, `sex`) values ('%s', '%s', '%s', %s)",
-                teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getSex().toString()
-        );
-        logger.info(sql);
-        jdbcTemplate.execute(sql);
+        teacher.setPassword("123456");
+        this.teacherService.save(teacher);
     }
 
     @PutMapping("{id}")
     public void update(@PathVariable Long id, @RequestBody Teacher newTeacher) {
-        String sql = String.format(
-                "update `teacher` set `name` = '%s'  , `username` = '%s' , `email` = '%s' , `sex` = %s where `id` = %s",
-                newTeacher.getName(), newTeacher.getUsername(), newTeacher.getEmail(), newTeacher.getSex().toString(), id
-        );
-        this.jdbcTemplate.update(sql);
+        this.teacherService.update(id, newTeacher);
     }
 
     /*

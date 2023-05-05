@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AppComponent} from '../app.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Teacher} from '../norm/entity/Teacher';
+import {FormControl, FormGroup} from '@angular/forms';
 
 /**
  * 教师添加组件
@@ -10,13 +12,9 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './teacher-add.component.html'
 })
 export class TeacherAddComponent implements OnInit {
-  name: string;
-  username: string;
-  email: string;
-  sex: boolean;
+
   message = '';
-
-
+  formGroup: FormGroup;
   constructor(private httpClient: HttpClient,
               private appComponent: AppComponent,
               private router: Router,
@@ -24,6 +22,12 @@ export class TeacherAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      name: new FormControl(),
+      username: new FormControl(),
+      email: new FormControl(),
+      sex: new FormControl()
+    });
   }
 
   /**
@@ -42,12 +46,12 @@ export class TeacherAddComponent implements OnInit {
    * 当声明方法为public（此关键字可省略）时，相当于绑定到了V层，V层中可以进行调用或是绑定操作。
    */
   public onSubmit(): void {
-    const url = 'http://localhost:8080/Teacher';
+    const url = '/Teacher';
     const teacher = {
-      name: this.name,
-      username: this.username,
-      email: this.email,
-      sex: this.sex
+      name: this.formGroup.get('name').value,
+      username: this.formGroup.get('username').value,
+      email: this.formGroup.get('email').value,
+      sex: this.formGroup.get('sex').value
     };
 
     console.log(teacher);

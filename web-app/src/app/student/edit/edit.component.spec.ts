@@ -4,7 +4,7 @@ import { EditComponent } from './edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {KlassSelectComponent} from '../klass-select/klass-select.component';
+import {KlassSelectComponent} from '../../core/klass-select/klass-select.component';
 import {ActivatedRoute} from '@angular/router';
 import {ActivatedRouteStub} from '../../klass/edit/activated-route-stub';
 import {StudentService} from '../../service/student.service';

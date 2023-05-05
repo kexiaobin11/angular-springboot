@@ -51,6 +51,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         System.out.println("当前token未绑定登录用户，返回401");
         // 为响应加入提示：用户未登录
         response.setStatus(401);
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,PATCH");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         return false;
     }
 

@@ -15,6 +15,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './login/login.component';
 import {AuthTokenInterceptor} from './core/auth-token-interceptor';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
+import {ApiInterceptor} from './core/api-interceptor';
+import { SexPipe } from './pipe/sex.pipe';
+import { LoadingDirective } from './directive/loading.directive';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { PersonalCenterComponent } from './personal-center/personal-center.compo
     FooterComponent,
     WelcomeComponent,
     LoginComponent,
-    PersonalCenterComponent
+    PersonalCenterComponent,
+    SexPipe,
+    LoadingDirective
   ],
     imports: [
         BrowserModule,
@@ -36,7 +41,8 @@ import { PersonalCenterComponent } from './personal-center/personal-center.compo
         RouterModule,
         ReactiveFormsModule
     ],
-  providers: [ {provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true}],
+  providers: [ {provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true},
+               {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true} ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

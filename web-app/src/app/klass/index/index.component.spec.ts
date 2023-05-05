@@ -33,8 +33,8 @@ describe('klass -> IndexComponent', () => {
     expect(component).toBeTruthy();
     const req = httpTestingController.expectOne('http://localhost:8080/Klass?name=');
     const klasses = [
-      new Klass(1, '计科1901班', new Teacher(1, 'zhagnsan', '张三')),
-      new Klass(2, '软件1902班', new Teacher(2, 'lisi', '李四'))
+      new Klass(1, '计科1901班', new Teacher()),
+      new Klass(2, '软件1902班', new Teacher())
     ];
     req.flush(klasses);
     fixture.detectChanges();
@@ -81,7 +81,7 @@ describe('klass -> IndexComponent', () => {
       queryButton.click();
       const req = httpTestingController.expectOne(`http://localhost:8080/Klass?name=${name}`);
       req.flush([
-        new Klass(1, 'hello班', new Teacher(1, 'zhagnsan', '张三'))
+        new Klass(1, 'hello班', new Teacher())
       ]);
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -102,7 +102,7 @@ describe('klass -> IndexComponent', () => {
   it('测试删除按钮', () => {
     const req = httpTestingController.expectOne('http://localhost:8080/Klass?name=');
     const klasses = [
-      new Klass(100, '计科1901班', new Teacher(1, 'zhagnsan', '张三')),
+      new Klass(100, '计科1901班', new Teacher()),
     ];
     req.flush(klasses);
     fixture.detectChanges();

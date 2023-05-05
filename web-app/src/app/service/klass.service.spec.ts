@@ -16,7 +16,7 @@ describe('KlassService', () => {
     const service: KlassService = TestBed.get(KlassService);
     expect(service).toBeTruthy();
   });
-  fit('all', () => {
+  it('all', () => {
     const service: KlassService = TestBed.get(KlassService);
     let result;
     service.all().subscribe( (data) => {

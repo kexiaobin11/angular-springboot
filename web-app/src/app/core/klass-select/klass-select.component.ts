@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Klass} from '../../norm/entity/Klass';
-import {Select} from '../../core/select/select.component';
+import {Select} from '../select/select.component';
 
 @Component({
   selector: 'app-klass-select',

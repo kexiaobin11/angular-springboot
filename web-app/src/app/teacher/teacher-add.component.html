@@ -1,21 +1,21 @@
 <h4 *ngIf="message">{{message}}</h4>
-<form id="teacherAddForm" (ngSubmit)="onSubmit()">
+<form id="teacherAddForm" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
   <div>
     <label for="name">姓名：</label>
-    <input type="text" id="name" name="name" [(ngModel)]="name"/>
+    <input type="text" id="name" name="name" formControlName="name"/>
   </div>
   <div>
     <label for="username">用户名：</label>
-    <input type="text" id="username" name="username" [(ngModel)]="username">
+    <input type="text" id="username" name="username" formControlName="username">
   </div>
   <div>
     <label for="email">邮箱：</label>
-    <input type="email" id="email" name="email" [(ngModel)]="email">
+    <input type="email" id="email" name="email" formControlName="email">
   </div>
   <div>
     <label>性别：</label>
-    <label> <input type="radio" name="sex" [value]="false" [(ngModel)]="sex"> 男</label>
-    <label> <input type="radio" name="sex" [value]="true" [(ngModel)]="sex"> 女</label>
+    <label> <input type="radio" name="sex" [value]="false" formControlName="sex"> 男</label>
+    <label> <input type="radio" name="sex" [value]="true"  formControlName="sex"> 女</label>
   </div>
   <div>
     <button>提交</button>

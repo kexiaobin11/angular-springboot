@@ -29,7 +29,6 @@ public class TokenFilter extends HttpFilter {
 
         // 有效性判断
         if (!this.validateToken(token)) {
-            // 如果无效则分发送的token
             token = this.makeToken();
             logger.info("原token无效，发布的新的token为" + token);
 
@@ -39,10 +38,8 @@ public class TokenFilter extends HttpFilter {
 
         logger.info("在控制器被调用以前执行");
 
-        // 在确立响应信息前，设置响应的header值
         response.setHeader(TOKEN_KEY, token);
 
-        // 转发数据。spring开始调用控制器中的特定方法
         chain.doFilter(request, response);
 
         logger.info("在控制器被调用以后执行");
@@ -59,11 +56,6 @@ public class TokenFilter extends HttpFilter {
         return token;
     }
 
-    /**
-     * 验证token的有效性
-     * @param token token
-     * @return
-     */
     private boolean validateToken(String token) {
         if (token == null) {
             return false;

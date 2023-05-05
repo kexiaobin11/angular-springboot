@@ -7,7 +7,7 @@ import {Klass} from '../norm/entity/Klass';
   providedIn: 'root'
 })
 export class KlassService {
-  private url = 'http://localhost:8080/Klass';
+  private url = '/Klass';
   constructor(private httpClient: HttpClient) { }
 
   /**

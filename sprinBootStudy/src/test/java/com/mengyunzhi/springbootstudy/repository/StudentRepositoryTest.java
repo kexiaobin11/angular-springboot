@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
@@ -207,6 +208,13 @@ public class StudentRepositoryTest {
         Assertions.assertThat(resultStudent.getName()).isEqualTo(studentJsonObject.get("name"));
         Assertions.assertThat(resultStudent.getKlass().getId()).isEqualTo(klassJsonObject.get("id"));
         Assertions.assertThat(resultStudent.getKlass().getName()).isEqualTo(klassJsonObject.get("name"));
+    }
+
+    @Test
+    @Transactional
+    public void page1() {
+        Teacher teacher = new Teacher();
+
     }
 
 }

@@ -1,8 +1,11 @@
 package com.mengyunzhi.springbootstudy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 public class Klass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +20,7 @@ public class Klass {
     }
 
     public Long getId() {
-        return id;
+       return id;
     }
 
     public void setId(Long id) {

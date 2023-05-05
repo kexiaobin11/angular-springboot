@@ -58,5 +58,4 @@ public class StudentServiceImpl implements StudentService {
         oldStudent.setKlass(newStudent.getKlass());
         return this.studentRepository.save(oldStudent);
     }
-
 }

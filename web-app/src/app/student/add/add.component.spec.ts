@@ -6,7 +6,7 @@ import {FormTest} from '../../testing/FormTest';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Student} from '../../norm/entity/student';
 import {Klass} from '../../norm/entity/Klass';
-import {KlassSelectComponent} from '../klass-select/klass-select.component';
+import {KlassSelectComponent} from '../../core/klass-select/klass-select.component';
 import {CoreModule} from '../../core/core.module';
 
 describe('student/AddComponent', () => {

@@ -78,4 +78,18 @@ class CourseControllerTest {
         Mockito.verify(this.courseService).save(courseArgumentCaptor.capture());
         Assert.assertEquals(courseArgumentCaptor.getValue().getName(), name);
     }
+
+    @Test
+    public void existByName() throws Exception {
+        Mockito.when(this.teacherService.isLogin(Mockito.any())).thenReturn(true);
+        String name = RandomString.make(4);
+        String url = "/Course/existsByName";
+        Mockito.when(this.courseService.existsByName(Mockito.eq(name))).thenReturn(false);
+        this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+                        .param("name", name))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("false"))
+        ;
+    }
+
 }

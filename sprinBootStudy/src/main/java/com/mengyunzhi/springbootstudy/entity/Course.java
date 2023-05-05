@@ -1,6 +1,7 @@
 package com.mengyunzhi.springbootstudy.entity;
 
 import com.mengyunzhi.springbootstudy.listener.CourseListener;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @EntityListeners(CourseListener.class)
+@Data
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

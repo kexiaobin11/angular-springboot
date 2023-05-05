@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {KlassSelectComponent} from './klass-select.component';
-import {CoreModule} from '../../core/core.module';
+import {CoreModule} from '../core.module';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Klass} from '../../norm/entity/Klass';
 import {By} from '@angular/platform-browser';

@@ -1,10 +1,12 @@
 package com.mengyunzhi.springbootstudy.entity;
 
+import lombok.Data;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.persistence.*;
 
 @Entity
+@Data
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

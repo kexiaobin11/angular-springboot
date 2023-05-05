@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IndexComponent} from './index.component';
-import {KlassSelectComponent} from '../klass-select/klass-select.component';
+import {KlassSelectComponent} from '../../core/klass-select/klass-select.component';
 import {CoreModule} from '../../core/core.module';
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';

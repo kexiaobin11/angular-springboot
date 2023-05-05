@@ -2,10 +2,19 @@ package com.mengyunzhi.springbootstudy.service;
 
 import com.mengyunzhi.springbootstudy.entity.Teacher;
 
+import java.util.List;
+
 /**
  * @author kexiaobin
  */
 public interface TeacherService {
+    List<Teacher> getAll();
+
+    Teacher getById(Long id);
+
+    void save(Teacher teacher);
+
+    void update(Long id, Teacher teacher);
 
     /**
      * 用户登录

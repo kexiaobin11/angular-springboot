@@ -74,16 +74,7 @@ public class StudentSpecsTest {
         students = this.studentRepository.findAll(StudentSpecs.belongToKlass(klass));
         Assertions.assertThat(students.size()).isEqualTo(0);
     }
-
-
-    /**
-     * name测试
-     * 1. 原文
-     * 2. left
-     * 3. middle
-     * 4. right
-     * 5. 不包含
-     */
+    
     @Test
     public void containingName() {
         List students = this.studentRepository.findAll(StudentSpecs.containingName("testName"));

@@ -81,7 +81,7 @@ describe('course -> AddComponent', () => {
     expect(button.disabled).toBeFalsy();
   });
 
-  fit('点击保存按钮', () => {
+  it('点击保存按钮', () => {
     component.formGroup.get('name').setValue('1234');
     fixture.detectChanges();
 
@@ -90,17 +90,17 @@ describe('course -> AddComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  fit('嵌入TeacherSelect组件测试', () => {
+  it('嵌入TeacherSelect组件测试', () => {
     // 获取组件替身的专用服务
     const teacherSelectService: TeacherSelectService = TestBed.get(TeacherSelectService);
-    const teacher = new Teacher(null, null, null);
+    const teacher = new Teacher();
 
     // 服务弹出teacher，断言组件接收到teacher
     teacherSelectService.selected.emit(teacher);
     expect(component.course.teacher).toBe(teacher);
   });
 
-  fit('嵌入KlassMultipleSelect组件测试', () => {
+  it('嵌入KlassMultipleSelect组件测试', () => {
     const courseTestController: CourseTestingController
       = TestBed.get(CourseTestingController);
     const klassMultipleSelectComponent: KlassMultipleSelectComponent
@@ -115,24 +115,24 @@ describe('course -> AddComponent', () => {
    * 在beforeEach的组件初始化代码中。
    * 当fixture.detectChanges();被首次执行时，会自动执行一次ngOnInit方法
    */
-  fit('ngOnInit', () => {
+  it('ngOnInit', () => {
     expect(component.formGroup).toBeDefined();
     expect(component.course).toBeDefined();
   });
 
-  fit('onTeacherSelect', () => {
-    const teacher = new Teacher(null, null, null);
+  it('onTeacherSelect', () => {
+    const teacher = new Teacher();
     component.onTeacherSelect(teacher);
     expect(component.course.teacher).toBe(teacher);
   });
 
-  fit('onKlassesChange', () => {
+  it('onKlassesChange', () => {
     const klasses = [new Klass(null, null, null)];
     component.onKlassesChange(klasses);
     expect(component.course.klasses).toBe(klasses);
   });
 
-  fit('onSubmit', () => {
+  it('onSubmit', () => {
     const course = new Course();
     component.course = course;
     const courseService: CourseService = TestBed.get(CourseService);
