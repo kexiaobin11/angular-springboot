@@ -88,8 +88,7 @@ class CourseControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get(url)
                         .param("name", name))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("false"))
-        ;
+                .andExpect(MockMvcResultMatchers.content().string("false"));
     }
 
 }

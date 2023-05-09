@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-4" id="pageInfo">
+    第{{currentPage+1}}/{{inputPage.totalPages}}页 每页{{inputPage.size}}条
+  </div>
+<nav class="row justify-content-md-center" [ngStyle]="{'visibility': inputPage.totalPages > 1 ? 'visible' : 'hidden'}">
+    <ul class="pagination col-md-auto">
+      <li [ngClass]="{disabled: inputPage.first}" class="page-item"><span class="page-link" (click)="onPage(currentPage - 1)">上一页</span></li>
+      <li *ngFor="let p of pages" [ngClass]="{active: currentPage === p}" class="page-item">
+        <span class="page-link" (click)="onPage(p)">{{p + 1}}</span>
+      </li>
+      <li [ngClass]="{disabled: inputPage.last}" class="page-item" ><span class="page-link" (click)="onPage(currentPage + 1)">下一页</span></li>
+    </ul>
+  </nav>
+</div>

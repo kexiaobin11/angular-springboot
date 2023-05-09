@@ -93,7 +93,7 @@ describe('course -> AddComponent', () => {
   it('嵌入TeacherSelect组件测试', () => {
     // 获取组件替身的专用服务
     const teacherSelectService: TeacherSelectService = TestBed.get(TeacherSelectService);
-    const teacher = new Teacher();
+    const teacher = new Teacher(null, null, null);
 
     // 服务弹出teacher，断言组件接收到teacher
     teacherSelectService.selected.emit(teacher);

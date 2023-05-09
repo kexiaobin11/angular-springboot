@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Student} from '../norm/entity/student';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Page} from '../norm/page';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class StudentService {
    * @param params name:名称,sno:学号,klassId:班级ID,page:第几页,size:每页大小
    */
   page(params: { name?: string, sno?: string, klassId?: number, page?: number, size?: number }):
-    Observable<{ totalPages: number, content: Array<Student> }> {
+    Observable<Page<Student>> {
     const url = '/Student';
 
     /* 设置默认值 */
@@ -36,7 +37,7 @@ export class StudentService {
       .set('size', params.size.toString());
     console.log(queryParams);
 
-    return this.httpClient.get<{ totalPages: number, content: Array<Student> }>(url, {params: queryParams});
+    return this.httpClient.get<Page<Student>>(url, {params: queryParams});
   }
 
   /**
@@ -75,4 +76,8 @@ export class StudentService {
     const url =  `http://localhost:8080/Student/${id}`;
     return this.httpClient.delete<void>(url);
   }
-}
+  bathDelete(ids: number[]): Observable<void> {
+    const stringIds = ids.map(id => id.toString());
+    return this.httpClient.delete<void>('Student/batch-delete', {params: {ids: stringIds}});
+  }
+ }

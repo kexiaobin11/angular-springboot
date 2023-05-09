@@ -65,13 +65,17 @@ public class CourseRepositoryTest {
     @Test
     @Transactional(readOnly = true)
     public void findAll1() {
-        Teacher teacher = new Teacher();
-        teacher.setId(1L);
-        Page<Course> courses = courseRepository.findAll("计算机网络", teacher,PageRequest.of(0, 2));
+      Page<Course> courses = courseRepository.findAll("计", 1L, 1L,PageRequest.of(0, 2));
       List<Course> courseList =  courses.getContent();
       for (Course course : courseList) {
           System.out.println(course);
       }
+    }
+    @Test
+    @Transactional
+    public void getById() {
+       Course course = this.courseRepository.findById(1L).get();
+        System.out.println(course);
     }
 
 }

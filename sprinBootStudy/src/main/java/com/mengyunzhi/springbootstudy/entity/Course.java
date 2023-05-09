@@ -24,6 +24,8 @@ public class Course {
     @ManyToMany
     private List<Klass> klasses = new ArrayList<>();
 
+
+
     public Long getId() {
         return id;
     }

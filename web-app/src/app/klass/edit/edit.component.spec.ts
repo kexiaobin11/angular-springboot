@@ -64,7 +64,7 @@ describe('klass EditComponent', () => {
     const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
     const req = httpTestingController.expectOne(`http://localhost:8080/Klass/${id}`);
     expect(req.request.method).toEqual('GET');
-    req.flush(new Klass(id, '测试编辑班级', new Teacher()));
+    req.flush(new Klass(id, '测试编辑班级', new Teacher(null, null, null)));
 
     fixture.whenStable().then(() => {
       expect(FormTest.getInputValueByFixtureAndCss(fixture, '#name')).toEqual('测试编辑班级');
@@ -81,7 +81,7 @@ describe('klass EditComponent', () => {
    */
   const onSubmitTest = (id: number) => {
     FormTest.setInputValue(fixture, '#name', '测试更新班级');
-    component.teacher = new Teacher(null);
+    component.teacher = new Teacher(null, null, null);
 
     fixture.whenStable().then(() => {
       FormTest.clickButton(fixture, 'button');

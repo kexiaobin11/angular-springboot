@@ -1,4 +1,13 @@
 <router-outlet></router-outlet>
+<div *ngIf="showPopWindow" class="mask"></div>
+<div *ngIf="showPopWindow" class="popWindow">
+  <h5>请选择是否删除</h5>
+  <hr>
+  <div class="text-right">
+    <button class="btn btn-sm btn-warning"  (click)="cancel()">取消</button>
+    <button class="btn btn-sm btn-primary" (click)="confirm()" >确认</button>
+  </div>
+</div>
 <a [routerLink]="['./add']">新增</a>
 <table class="table">
   <tr>
@@ -16,10 +25,11 @@
     <td>{{teacher.username}}</td>
     <td>{{teacher.email}}</td>
     <td>
-      <span *ngIf="teacher.sex">女</span>
-      <span *ngIf="!teacher.sex">男</span>
+        <span>{{teacher.sex | sex}}</span>
+
     </td>
     <td>{{teacher.createTime | date: 'yyyy-MM-dd'}}</td>
-    <td><a [routerLink]="['./edit', teacher.id]">编辑</a> &nbsp;&nbsp;<button (click)="onDelete(teacher)">删除</button></td>
+    <td><a [routerLink]="['./edit', teacher.id]" class="btn btn-sm btn-info"><span class="oi oi-pencil"></span>编辑</a>
+      <button (click)="onDelete(teacher)" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span>删除</button></td>
   </tr>
 </table>

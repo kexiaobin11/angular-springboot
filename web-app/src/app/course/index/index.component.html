@@ -1,3 +1,12 @@
+<div *ngIf="showPopWindow" class="mask"></div>
+<div *ngIf="showPopWindow" class="popWindow">
+  <h5>请选择是否删除</h5>
+  <hr>
+  <div class="text-right">
+    <button class="btn btn-sm btn-warning"  (click)="cancel()">取消</button>
+    <button class="btn btn-sm btn-primary" (click)="confirm()" >确认</button>
+  </div>
+</div>
 <form (ngSubmit)="onQuery()">
   <label>课程名称：<input name="name" [formControl]="params.name" type="text"/></label>
   <label>教师：
@@ -8,30 +17,36 @@
   </label>
   <button type="submit">查询</button>
 </form>
-
-<div class="row">
+<div class="row m-2">
   <div class="col text-right">
     <a class="btn btn-primary" routerLink="./add"><span class="oi oi-plus"></span>新增课程</a>
+    <button class="btn btn-danger ml-2" type="button" (click)="onBatchDeleteClick()"><i class="oi oi-trash"></i>删除</button>
   </div>
 </div>
-
 <table class="table">
   <tr>
+    <th><input type="checkbox" [checked]="isCheckedAll"  (click)="onCheckAllBoxChange($event)"/></th>
     <th>序号</th>
     <th>名称</th>
     <th>任课教师</th>
     <th>班级</th>
     <th>操作</th>
   </tr>
-  <tr *ngFor="let course of coursePage.content; index as index">
+  <tr *ngFor="let course of pageData?.content; index as index">
+    <td><input type="checkbox" [checked]="course.isChecked" (change)="onCheckBoxChange($event, course)" /></td>
     <td>{{index + 1}}</td>
-    <td>{{course.name}}</td>
+    <td>{{course?.name}}</td>
     <td>{{course.teacher?.name}}</td>
-    <td></td>
+    <td>
+      <label *ngFor="let klass of course.klasses">
+      {{klass.name}} &nbsp;
+      </label>
+    </td>
     <td>
       <a routerLink="./edit/{{course.id}}" class="btn btn-sm btn-info"><span class="oi oi-pencil"></span>编辑</a>
       <button (click)="onDelete(course)" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span>删除</button>
     </td>
   </tr>
 </table>
+<app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
 

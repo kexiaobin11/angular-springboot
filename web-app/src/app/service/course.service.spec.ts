@@ -3,14 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { CourseService } from './course.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Course} from '../norm/entity/course';
-import {Student} from '../norm/entity/student';
 import {HttpRequest} from '@angular/common/http';
+import {CourseStubService} from './course-stub.service';
 
 describe('CourseService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
-      HttpClientTestingModule
-    ]
+      HttpClientTestingModule,
+    ],
   }));
 
   it('should be created', () => {
@@ -44,7 +44,7 @@ describe('CourseService', () => {
     expect(request.request.method).toEqual('GET');
     expect(request.request.params.get('name')).toEqual('test');
   });
-  fit( 'page ', () => {
+  it( 'page ', () => {
     const service: CourseService = TestBed.get(CourseService);
     const mockResult = {
       totalPages: 10,
@@ -60,5 +60,17 @@ describe('CourseService', () => {
       return request.url === 'http://localhost:8080/Course';
     });
     expect(req.request.method).toEqual('GET');
+  });
+  fit( 'delete', () => {
+    const service: CourseService = TestBed.get(CourseService);
+    const id = Math.floor(Math.random() * 100);
+    let called = false;
+    service.delete(id).subscribe(() => {
+      called = true;
+    });
+    const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+    const req = httpTestingController.expectOne(`http://localhost:8080/Course/${id}`);
+    console.log(req.request);
+    expect(req.request.method).toEqual('DELETE');
   });
 });

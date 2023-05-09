@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Course} from '../../norm/entity/course';
-import {Page} from '../../norm/page';
 import {FormControl} from '@angular/forms';
 import {Klass} from '../../norm/entity/Klass';
 import {Teacher} from '../../norm/entity/Teacher';
 import {CourseService} from '../../service/course.service';
-import {Student} from '../../norm/entity/student';
+import {Page} from '../../norm/page';
+import {Confirm, Report} from 'notiflix';
 
 @Component({
   selector: 'app-index',
@@ -13,7 +13,9 @@ import {Student} from '../../norm/entity/student';
   styleUrls: ['./index.component.sass']
 })
 export class IndexComponent implements OnInit {
-  pages: Array<number>;
+  showPopWindow = false;
+  cacheCourse: Course;
+  pageData = {} as Page<Course>;
   params = {
     page: 0,
     size: 2,
@@ -21,7 +23,8 @@ export class IndexComponent implements OnInit {
     klass: new Klass(null, null, null),
     teacher: new Teacher(null, null, null)
   };
-  coursePage: { totalPages: number; content: Array<Course> };
+  /* 是否全部选中 */
+  isCheckedAll = false;
 
   constructor(private courseService: CourseService) { }
 
@@ -29,7 +32,10 @@ export class IndexComponent implements OnInit {
     this.loadData();
   }
 
-  onQuery(): void {}
+  onQuery(): void {
+    this.params.page = 0;
+    this.loadData();
+  }
   onSelectKlass($event: Klass): void {
     this.params.klass = $event;
   }
@@ -37,30 +43,8 @@ export class IndexComponent implements OnInit {
     this.params.teacher = $event;
   }
   onDelete(course: Course): void {
-  }
-
-  makePagesByTotalPages(currentPage: number, totalPages: number): Array<number> {
-    if (totalPages > 0) {
-      if (totalPages <= 5) {
-        return this.makePages(0, totalPages - 1);
-      }
-      if (currentPage < 2) {
-        return this.makePages(0, 4);
-      }
-      if (currentPage > totalPages - 3) {
-        return this.makePages(totalPages - 5, totalPages - 1);
-      }
-      /* 总页数大于5，且为中间页码*/
-      return this.makePages(currentPage - 2, currentPage + 2);
-    }
-    return new Array();
-  }
-  makePages(begin: number, end: number): Array<number> {
-    const result = new Array<number>();
-    for (; begin <= end; begin++) {
-      result.push(begin);
-    }
-    return result;
+    this.cacheCourse = course;
+    this.showPopWindow = true;
   }
   loadData() {
     const queryParams = {
@@ -70,12 +54,72 @@ export class IndexComponent implements OnInit {
       klassId: this.params.klass.id,
       teacherId: this.params.teacher.id
     };
-    this.courseService.page(queryParams).subscribe( (respone) => {
-      this.coursePage = respone;
-      this.pages = this.makePagesByTotalPages(this.params.page, respone.totalPages);
-    }, error => {
-      console.log('请求失败');
-    });
+    this.courseService.page(queryParams)
+      .subscribe((response) => {
+        this.pageData = response;
+      });
+  }
+  onPage($event: number) {
+    this.params.page = $event;
+    this.loadData();
+  }
+  cancel(): void {
+    this.showPopWindow = false;
   }
 
+  confirm(): void {
+    this.deleteCacheCourse();
+    this.showPopWindow = false;
+  }
+  onCheckBoxChange($event: Event, course: Course): void {
+    const checkbox = $event.target as HTMLInputElement;
+    course.isChecked = checkbox.checked;
+    if (checkbox.checked) {
+      let checkedAll = true;
+      this.pageData.content.forEach((value, index) => {
+        if (!value.isChecked) {
+          checkedAll = false;
+        }
+      });
+      this.isCheckedAll = checkedAll;
+    } else {
+     this.isCheckedAll = false;
+    }
+  }
+  deleteCacheCourse(): void {
+    const course = this.cacheCourse;
+    this.courseService.delete(course.id).subscribe(() => {
+      this.pageData.content.forEach( (value, index) => {
+        if (value === course) {
+          this.pageData.content.splice(index, 1);
+          console.log('删除失败');
+        }
+      }, () => {
+        console.log('删除成功');
+      });
+    });
+  }
+  onCheckAllBoxChange($event): void {
+    const checkbox = $event.target as HTMLInputElement;
+    this.isCheckedAll = checkbox.checked;
+    this.pageData.content.forEach( (value) => {
+      value.isChecked = checkbox.checked;
+    });
+  }
+  onBatchDeleteClick(): void {
+    /*
+    * 监听s.isChecked是否为真，为真获取到为真的id
+    * */
+    const beDeleteIds = this.pageData.content.filter(s => s.isChecked).map(d => d.id);
+    if (beDeleteIds.length === 0) {
+      Report.warning('出错了', '请先选择要删除的学生', '返回');
+    } else {
+      Confirm.show('请确认', '此操作不可逆', '确认',
+        '取消', () => {
+          this.courseService.beDeleteIds(beDeleteIds).subscribe(() => {
+            this.loadData();
+          });
+        });
+    }
+  }
 }

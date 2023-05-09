@@ -9,10 +9,11 @@ import {KlassModule} from '../klass/klass.module';
 import {CoreModule} from '../core/core.module';
 import { IndexComponent } from './index/index.component';
 import {KlassSelectComponent} from '../core/klass-select/klass-select.component';
+import { EditComponent } from './edit/edit.component';
 
 
 @NgModule({
-  declarations: [AddComponent, KlassMultipleSelectComponent, IndexComponent],
+  declarations: [AddComponent, KlassMultipleSelectComponent, IndexComponent, EditComponent],
   imports: [
     CommonModule,
     CourseRoutingModule,

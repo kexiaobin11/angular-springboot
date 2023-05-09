@@ -53,7 +53,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         response.setStatus(401);
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,PATCH");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-        return false;
+        return true;
     }
 
     @Override

@@ -1,0 +1,29 @@
+<div class="row justify-content-center">
+  <div class="col-4">
+    <h2>添加课程</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+      <div class="form-group">
+        <label for="name">名称</label>
+        <input type="text" class="form-control" id="name"
+               placeholder="名称" formControlName="name" required>
+      </div>
+      <small id="nameRequired" *ngIf="formGroup.get('name').dirty && formGroup.get('name').errors && formGroup.get('name').errors.required" class="form-text text-danger">请输入课程名</small>
+      <small id="nameMinLength" *ngIf="formGroup.get('name').errors && formGroup.get('name').errors.minlength" class="form-text text-danger">课程名称不得少于2个字符</small>
+      <small id="uniqueByName" *ngIf="formGroup.get('name').errors && formGroup.get('name').errors.uniqueName" class="form-text text-danger">当前课程名已被占用</small>
+      <div class="form-group">
+        <label>任课教师</label>
+        <app-teacher-select (selected)="onTeacherSelect($event)" [teacher] = "this.teacher"></app-teacher-select>
+      </div>
+      <div class="form-group">
+        <label>绑定班级</label>
+        <div>
+          <app-klass-multiple-select *ngIf="klasses" [item]="klasses" (changed)="onKlassesChange($event)"></app-klass-multiple-select>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" >保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+<a style="display: none" routerLink="./../../" #linkToIndex>返回课程主页</a>

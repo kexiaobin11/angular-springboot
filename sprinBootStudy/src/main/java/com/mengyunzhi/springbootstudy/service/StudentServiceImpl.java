@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -49,7 +51,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteById(@NotNull Long id) {
         Assert.notNull(id, "传入的Id不能为空");
+        System.out.println("传入" + id);
         this.studentRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIn(List<Long> ids) {
+        this.studentRepository.deleteAllById(ids);
     }
 
     public Student updateFields(Student newStudent, Student oldStudent) {

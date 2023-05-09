@@ -18,6 +18,5 @@ export class Student {
     this.klass = data.klass ? data.klass : null;
     this.name = data.name ? data.name : '';
     this.sno = data.sno ? data.sno : '';
-
   }
 }

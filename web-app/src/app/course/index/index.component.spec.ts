@@ -5,6 +5,9 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TestModule} from '../../test/test.module';
 import {CoreTestingModule} from '../../core/core-testing/core-testing.module';
 import {RouterTestingModule} from '@angular/router/testing';
+import {Student} from '../../norm/entity/student';
+import {Course} from '../../norm/entity/course';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
 describe('IndexComponent', () => {
   let component: IndexComponent;
@@ -18,7 +21,8 @@ describe('IndexComponent', () => {
         FormsModule,
         TestModule,
         CoreTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule
       ]
     })
     .compileComponents();
@@ -32,5 +36,13 @@ describe('IndexComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  fit('onDelete -> 确认删除', () => {
+    component.showPopWindow = false;
+    const course = new Course();
+    component.onDelete(course);
+    fixture.detectChanges();
+    expect(component.cacheCourse).toBeTruthy(course);
+    expect(component.showPopWindow).toBeTruthy();
   });
 });

@@ -17,7 +17,7 @@ export class Teacher {
    * @param email 邮箱
    * @param sex 性别
    */
-  constructor(id: number, username: string, name: string, email?: string, sex?: boolean) {
+  constructor(id?: number, username?: string, name?: string, email?: string, sex?: boolean) {
     this.id = id;
     this.name = name;
     this.username = username;

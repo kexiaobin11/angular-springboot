@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -33,8 +38,33 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<Course> findAll(String name, Long klassId, Long teacherId, Pageable pageable) {
-        Teacher teacher = new Teacher();
-        teacher.setId(teacherId);
-        return this.courseRepository.findAll(name, teacher, pageable);
+        return this.courseRepository.findAll(name,klassId,teacherId, pageable);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.courseRepository.deleteById(id);
+    }
+
+    @Override
+    public Course findById(Long id) {
+        return this.courseRepository.findById(id).get();
+    }
+
+    @Override
+    public Course update(Long id, Course course) {
+        System.out.println(course);
+      Course oldCourse = this.courseRepository.findById(id).get();
+      oldCourse.setTeacher(course.getTeacher());
+      oldCourse.setName(course.getName());
+      oldCourse.setKlasses(course.getKlasses());
+      return this.courseRepository.save(oldCourse);
+    }
+    @Transactional
+    @Override
+    public void deleteByIdIn(List<Long> ids) {
+        this.courseRepository.deleteByIdIn(ids);
+    }
+
+
 }

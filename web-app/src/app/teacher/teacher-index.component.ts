@@ -1,15 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Teacher} from '../norm/entity/Teacher';
+import {TeacherService} from '../service/teacher.service';
 
 @Component({
   templateUrl: './teacher-index.component.html',
+  styleUrls: ['./teacher-index.component.sass']
 })
 export class TeacherIndexComponent implements OnInit {
 
   // 定义教师数组
   teachers = new Array();
+  showPopWindow = false;
+  cacheTeacher: Teacher;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private teacherService: TeacherService) {
   }
 
   /**
@@ -34,15 +39,22 @@ export class TeacherIndexComponent implements OnInit {
    * 点击删除按钮时删除对应的教师
    * @param teacher 要删除的教师
    */
-  onDelete(teacher: { id: string }): void {
-    const url = 'http://localhost:8080/Teacher/' + teacher.id;
-    this.httpClient.delete(url)
-      .subscribe(() => {
+  onDelete(teacher): void {
+    this.cacheTeacher = teacher;
+    this.showPopWindow = true;
+  }
+  confirm(): void {
+    const teacher = this.cacheTeacher;
+    this.teacherService.delete(teacher.id).subscribe(
+      () => {
         console.log('删除成功');
-        this.ngOnInit();
-      }, () => {
-        console.log('删除失败');
-      });
+      }
+    );
+    this.showPopWindow = false;
+  }
+  cancel(): void {
+    console.log('取消');
+    this.showPopWindow = false;
   }
 
 }

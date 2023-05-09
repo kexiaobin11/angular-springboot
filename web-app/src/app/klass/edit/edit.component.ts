@@ -32,6 +32,7 @@ export class EditComponent implements OnInit {
       .subscribe((klass: Klass) => {
         this.formGroup.setValue({name: klass.name});
         this.teacher = klass.teacher;
+        console.log(this.teacher);
       }, () => {
         console.error(`${this.getUrl()}请求发生错误`);
       });
@@ -74,7 +75,7 @@ export class EditComponent implements OnInit {
   private setUrlById(id: number): void {
     this.url = `http://localhost:8080/Klass/${id}`;
   }
-  onSelectTeacher($event: Teacher) {
+  onTeacherSelect($event: Teacher) {
     this.teacher = $event;
   }
 

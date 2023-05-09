@@ -32,7 +32,7 @@ export class CourseService {
    * @param params name课程名称  klassId 班级 teacherId 教师
    */
   page(params: {name?: string, klassId?: number, teacherId?: number, page?: number, size?: number}):
-    Observable<{totalPages: number, content: Array<Course>}> {
+    Observable<Page<Course>> {
     if (params.page === undefined) {
       params.page = 0;
     }
@@ -42,13 +42,31 @@ export class CourseService {
     const queryParams = new HttpParams()
       .set('name', params.name ? params.name : '')
       .set('klassId', params.klassId ? params.klassId.toString() : '')
-      .set('teacherId', params.teacherId ? params.klassId.toString() : '')
+      .set('teacherId', params.teacherId ? params.teacherId.toString() : '')
       .set('page', params.page.toString())
       .set('size', params.size.toString());
     console.log(queryParams);
-    return this.httpClient.get<{totalPages: number, content: Array<Course>}>(this.url,  {params: queryParams});
+    console.log(queryParams);
+    return this.httpClient.get<Page<Course>>(this.url,  {params: queryParams});
   }
   delete(id: number): Observable<boolean> {
-    return null;
+    const url = this.url + '/' + id;
+    console.log(url);
+    return this.httpClient.delete<boolean>(url);
+  }
+  getById(id: number): Observable<Course> {
+    const url = this.url + '/' + id;
+    console.log(url);
+    return this.httpClient.get<Course>(url);
+  }
+  update(id: number, course: Course): Observable<Course> {
+    const url = this.url + '/' + id;
+    console.log(url);
+    return this.httpClient.put<Course>(url, course);
+  }
+  beDeleteIds(sid: number[]): Observable<void> {
+    const stringIds = sid.map(id => id.toString());
+    const url = this.url + '/batch-delete';
+    return this.httpClient.delete<void>(url, {params: {ids: stringIds}});
   }
 }

@@ -9,8 +9,8 @@ import {Teacher} from '../../norm/entity/Teacher';
 describe('TeacherSelectComponent', () => {
   let component: TeacherSelectComponent;
   let fixture: ComponentFixture<TeacherSelectComponent>;
-  const teachers = new Array(new Teacher(),
-    new Teacher());
+  const teachers = new Array(new Teacher(null, null, null),
+    new Teacher(null, null, null));
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -14,6 +14,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Collection;
+
 public interface CourseRepository extends PagingAndSortingRepository<Course, Long>,  JpaSpecificationExecutor {
     /**
      * 课程名称是否存在
@@ -22,10 +24,19 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Lon
      */
     boolean existsByName(String name);
 
-   default Page<Course> findAll(String name, Teacher teacher, @NotNull Pageable pageable) {
+   default Page<Course> findAll(String name,Long klassId, Long teacherId, @NotNull Pageable pageable) {
        Assert.assertNotNull(pageable.toString(), "传入的pageable不能为null");
-       Specification<Course> specification = CourseSpecs.belongToTeacher(teacher)
-               .and(CourseSpecs.containingName(name));
+       Specification<Course> specification;
+       if (klassId == null && teacherId == null) {
+          specification = CourseSpecs.containingName(name);
+       } else if (klassId == null && teacherId != null)  {
+           specification = CourseSpecs.belongToTeacher(teacherId).and(CourseSpecs.containingName(name));
+       } else if(klassId != null && teacherId == null) {
+          specification = CourseSpecs.containingName(name).and(CourseSpecs.queryKlass(klassId));
+       } else {
+           specification = CourseSpecs.belongToTeacher(teacherId).and(CourseSpecs.containingName(name)).and(CourseSpecs.queryKlass(klassId));
+       }
        return this.findAll(specification, pageable);
    };
+    void deleteByIdIn(Collection<Long> ids);
 }

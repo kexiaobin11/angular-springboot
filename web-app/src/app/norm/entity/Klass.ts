@@ -7,7 +7,7 @@ export class Klass {
   id: number;
   name: string;
   teacher: Teacher;
-
+  isCheck = false;
   /**
    * 构造函数
    * @param id id

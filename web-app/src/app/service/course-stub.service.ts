@@ -15,4 +15,8 @@ export class CourseStubService {
   existsByName(name: string): Observable<boolean> {
    return of(true);
   }
+  page(params: {name?: string, klassId?: number, teacherId?: number, page?: number, size?: number}):
+    Observable<{totalPages: number, content: Array<Course>}> {
+    return null;
+  }
 }

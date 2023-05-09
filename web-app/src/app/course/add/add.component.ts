@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Course} from '../../norm/entity/course';
 import {Teacher} from '../../norm/entity/Teacher';
@@ -12,6 +12,9 @@ import {UniqueNameValidator} from '../validator/unique-name-validator';
   styleUrls: ['./add.component.sass']
 })
 export class AddComponent implements OnInit {
+  @ViewChild('linkToIndex', {static: true})
+  linkToIndex: ElementRef;
+
   formGroup: FormGroup;
   course: Course;
 
@@ -36,7 +39,11 @@ export class AddComponent implements OnInit {
     this.course.name = this.formGroup.get('name').value;
     this.courseService.save(this.course).subscribe((course) => {
       console.log(course);
+      this.goToIndex();
     });
+  }
+  goToIndex(): void {
+    this.linkToIndex.nativeElement.click();
   }
 /*传入多个id*/
   onKlassesChange($event: Klass[]) {

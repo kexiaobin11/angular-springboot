@@ -77,7 +77,6 @@ public class TokenFilter extends HttpFilter {
             this(request);
             this.token = token;
         }
-
         @Override
         public String getHeader(String name) {
             if (TOKEN_KEY.equals(name)) {

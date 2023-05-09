@@ -15,8 +15,8 @@
     <td>{{klass.name}}</td>
     <td>{{klass.teacher.name}}</td>
     <td>
-      <a routerLink="./edit/{{klass.id}}">编辑</a>&nbsp;&nbsp;
-      <button (click)="onDelete(klass)">删除</button>
+      <a routerLink="./edit/{{klass.id}}" class="btn btn-sm btn-info"><i class="oi oi-pencil"></i>编辑</a>&nbsp;&nbsp;
+      <button (click)="onDelete(klass)" class="btn btn-sm btn-danger"><i class="oi oi-trash"></i>删除</button>
     </td>
   </tr>
 </table>

@@ -3,7 +3,8 @@ import {Student} from '../../norm/entity/student';
 import {Klass} from '../../norm/entity/Klass';
 import {FormControl} from '@angular/forms';
 import {StudentService} from '../../service/student.service';
-import {Confirm} from 'notiflix';
+import {Confirm, Report} from 'notiflix';
+import {Page} from '../../norm/page';
 
 @Component({
   selector: 'app-index',
@@ -13,7 +14,7 @@ import {Confirm} from 'notiflix';
 export class IndexComponent implements OnInit {
   /* 分页数据 */
   pages: Array<number>;
-
+  pageData = {} as Page<Student>;
   /* 是否全部选中 */
   isCheckedAll = false;
 
@@ -41,35 +42,6 @@ export class IndexComponent implements OnInit {
   }
 
   /**
-   * 生成分页数据
-   * @param currentPage 当前页
-   * @param totalPages 总页数
-   */
-  makePagesByTotalPages(currentPage: number, totalPages: number): Array<number> {
-    if (totalPages > 0) {
-      /* 总页数小于5 */
-      if (totalPages <= 5) {
-        return this.makePages(0, totalPages - 1);
-      }
-
-      /* 首2页 */
-      if (currentPage < 2) {
-        return this.makePages(0, 4);
-      }
-
-      /* 尾2页 */
-      if (currentPage > totalPages - 3) {
-        return this.makePages(totalPages - 5, totalPages - 1);
-      }
-
-      /* 总页数大于5，且为中间页码*/
-      return this.makePages(currentPage - 2, currentPage + 2);
-    }
-
-    return new Array();
-  }
-
-  /**
    * 删除学生
    * @param student 学生
    */
@@ -83,13 +55,17 @@ export class IndexComponent implements OnInit {
    */
   deleteCacheStudent() {
     const student = this.cacheDeleteStudent;
+    console.log('学生的值' + student.name);
     this.studentService.deleteById(student.id).subscribe(
       () => {
+        console.log('删除成功');
         this.pageStudent.content.forEach( (value, key) => {
           if (value === student ) {
             this.pageStudent.content.splice(key, 1);
           }
         });
+      }, error => {
+        console.log('删除失败');
       }
     );
   }
@@ -107,25 +83,10 @@ export class IndexComponent implements OnInit {
     };
 
     this.studentService.page(queryParams)
-      .subscribe((response: { totalPages: number, content: Array<Student> }) => {
-        this.pageStudent = response;
-        this.pages = this.makePagesByTotalPages(this.params.page, response.totalPages);
+      .subscribe((response) => {
+        this.pageData = response;
       });
   }
-
-  /**
-   * 生成页码
-   * @param begin 开始页码
-   * @param end 结束页码
-   */
-  makePages(begin: number, end: number): Array<number> {
-    const result = new Array<number>();
-    for (; begin <= end; begin++) {
-      result.push(begin);
-    }
-    return result;
-  }
-
   ngOnInit() {
     this.loadData();
   }
@@ -151,13 +112,13 @@ export class IndexComponent implements OnInit {
     const checkbox = $event.target as HTMLInputElement;
     student.isChecked = checkbox.checked;
     if (checkbox.checked) {
-      let checkedAll = true;
-      this.pageStudent.content.forEach((value) => {
+      let checkboxAll = true;
+      this.pageData.content.forEach((value) => {
         if (!value.isChecked) {
-          checkedAll = false;
+          checkboxAll = false;
         }
       });
-      this.isCheckedAll = checkedAll;
+      this.isCheckedAll = checkboxAll;
     } else {
       this.isCheckedAll = false;
     }
@@ -167,11 +128,8 @@ export class IndexComponent implements OnInit {
    * 点击分页按钮
    * @param page 要请求的页码
    */
-  onPage(page: number) {
-    if (page < 0 || page >= this.pageStudent.totalPages) {
-      return;
-    }
-    this.params.page = page;
+  onPage($event: number) {
+    this.params.page = $event;
     this.loadData();
   }
 
@@ -200,4 +158,19 @@ export class IndexComponent implements OnInit {
     console.log('取消');
     this.showPopWindow = false;
   }
+  onBatchDeleteClick(): void {
+    const ids = this.pageData.content.filter(e => e.isChecked).map(e => e.id);
+    if (ids.length === 0) {
+      Report.warning('出错了', '请选择要删除的学生', '返回');
+    } else {
+      Confirm.show('请确认', '此操作不可逆', '确认',
+        '取消', () => {
+        console.log(ids);
+        this.studentService.bathDelete(ids).subscribe(() => {
+          this.params.page = 0;
+          this.loadData();
+        });
+        });
+      }
+    }
 }

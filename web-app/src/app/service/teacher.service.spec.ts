@@ -41,7 +41,7 @@ describe('TeacherService', () => {
     const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
     const req = httpTestingController.expectOne('http://localhost:8080/Teacher/me');
     expect(req.request.method).toEqual('GET');
-    const mockReturnTeacher = new Teacher();
+    const mockReturnTeacher = new Teacher(null, null, null);
     req.flush(mockReturnTeacher);
     expect(result).toBe(mockReturnTeacher);
   });

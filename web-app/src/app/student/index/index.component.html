@@ -5,7 +5,8 @@
   <div class="text-right">
     <button class="btn btn-sm btn-warning"  (click)="cancel()">取消</button>
     <button class="btn btn-sm btn-primary" (click)="confirm()" >确认</button>
-  </div></div>
+  </div>
+</div>
 <form (ngSubmit)="onQuery()">
   <label>姓名：<input name="name" [formControl]="params.name" type="text" /></label>
   <label>学号：<input name="sno" [formControl]="params.sno" type="text" /></label>
@@ -17,6 +18,7 @@
 <div class="row">
   <div class="col text-right">
     <a class="btn btn-primary" routerLink="./add"><span class="oi oi-plus"></span>新增学生</a>
+    <button class="btn btn-danger mr-2" type="button" (click)="onBatchDeleteClick()"><i class="fas fa-trash-alt"></i>删除</button>
   </div>
 </div>
 <table class="table">
@@ -28,7 +30,7 @@
     <th>班级</th>
     <th>操作</th>
   </tr>
-  <tr *ngFor="let student of pageStudent.content; index as index">
+  <tr *ngFor="let student of pageData.content; index as index">
     <td><input type="checkbox" [checked]="student.isChecked" (change)="onCheckBoxChange($event, student)" /></td>
     <td>{{index + 1}}</td>
     <td>{{student.name}}</td>
@@ -40,31 +42,4 @@
     </td>
   </tr>
 </table>
-<div *ngIf="pageStudent" class="row">
-  <div class="col-4" id="pageInfo">
-    第{{params.page + 1}}/{{pageStudent.totalPages}}页 每页{{params.size}}条
-  </div>
-  <div class="col-8">
-    <nav>
-      <ul class="pagination">
-        <li class="page-item" [ngClass]="{'disabled': params.page === 0}" (click)="onPage(0)">
-          <span class="page-link">首页</span>
-        </li>
-        <li class="page-item" [ngClass]="{'disabled': params.page === 0}" (click)="onPage(params.page - 1)">
-          <span class="page-link">上一页</span>
-        </li>
-        <li class="page-item" [ngClass]="{'active': params.page === page}" *ngFor="let page of pages" (click)="onPage(page)">
-          <span class="page-link" *ngIf="page !== params.page">{{page + 1}}</span>
-          <span class="page-link" *ngIf="page === params.page">{{page + 1}}<span class="sr-only">(current)</span></span>
-        </li>
-        <li class="page-item" [ngClass]="{'disabled': params.page === pageStudent.totalPages - 1}" (click)="onPage(params.page + 1)">
-          <span class="page-link">下一页</span>
-        </li>
-        <li class="page-item" [ngClass]="{'disabled': params.page === pageStudent.totalPages - 1}" (click)="onPage(pageStudent.totalPages - 1)">
-          <span class="page-link">尾页</span>
-        </li>
-
-      </ul>
-    </nav>
-  </div>
-</div>
+<app-page [page]="pageData" (bePageChange)="onPage($event)"  ></app-page>

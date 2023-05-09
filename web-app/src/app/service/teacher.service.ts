@@ -61,7 +61,11 @@ export class TeacherService {
   * 注销方法
   * */
   logout(): Observable<void> {
-    const url = 'http://localhost:8080/Teacher/logout'
+    const url = 'http://localhost:8080/Teacher/logout';
     return this.httpClient.get<void>(url);
+  }
+  delete(id: number): Observable<void> {
+    const url = 'Teacher/' + id;
+    return this.httpClient.delete<void>(url);
   }
 }

@@ -18,16 +18,26 @@ public class CourseSpecs {
         return new Specification<Course>() {
             @Override
             public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get("name").as(String.class), String.format("%%s%%", name));
+              return criteriaBuilder.like(root.get("name").as(String.class), String.format("%%%s%%", name));
             }
         };
     }
-    public static Specification<Course> belongToTeacher(Teacher teacher) {
-        if (null == teacher|| null == teacher.getId()) {
-            return Specification.where(null);
-        }
-        return (Specification<Course>) (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.equal(root.join("teacher").get("id").as(String.class), teacher.getId().toString());
+    public static Specification<Course> belongToTeacher(Long teacherId) {
+     return new Specification<Course>() {
+         @Override
+         public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+             return criteriaBuilder.equal(root.get("teacher").get("id").as(Long.class), teacherId);
+         }
+     };
     }
-
+    public static Specification<Course> queryKlass(Long klassId) {
+        return new Specification<Course>() {
+            @Override
+            public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                Join<Course, Klass> courseklassJoin = root.join("klasses", JoinType.INNER);
+                Predicate predicate = criteriaBuilder.equal(courseklassJoin.get("id"), klassId);
+                return predicate;
+            };
+        };
+    }
 }

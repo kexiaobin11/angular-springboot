@@ -6,6 +6,7 @@ export class Course {
   name: string;
   teacher: Teacher;
   klasses: Klass[];
+  isChecked = false;
 
   constructor(data?: { id?: number, name?: string, teacher?: Teacher, klasses?: Klass[]}) {
     if (data) {
