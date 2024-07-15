@@ -1,0 +1,26 @@
+name: Deploy to Alibaba Cloud ECS
+
+on:
+  push:
+    tags:
+       '*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.ECS_PRIVATE_KEY }}
+
+    - name: Run deployment script on ECS
+      run: |
+        ssh -o StrictHostKeyChecking=no root@${{ secrets.ECS_HOST }} << 'EOF'
+          docker pull nginx
+          docker run -d -p 80:80 nginx
+        EOF
