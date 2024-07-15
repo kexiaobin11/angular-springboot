@@ -16,11 +16,11 @@ jobs:
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.ECS_PRIVATE_KEY }}
+        ssh-private-key: ${{ secrets.ALIYUN_SERVER_PRIVATE_KEY }}
 
     - name: Run deployment script on ECS
       run: |
-        ssh -o StrictHostKeyChecking=no root@${{ secrets.ECS_HOST }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no root@${{ secrets.ALIYUN_SERVER_HOST }} << 'EOF'
           docker pull nginx
           docker run -d -p 80:80 nginx
         EOF
