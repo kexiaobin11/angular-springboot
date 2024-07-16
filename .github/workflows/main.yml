@@ -83,3 +83,45 @@ jobs:
     - name: Copy app.jar to ECS
       run: |
          scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
+    - name: Stop Eixisting Containers
+      run: |
+       ssh -o StrictHostKeyChecking=no root@${{ secrets.ALIYUN_SERVER_HOST }} << 'EOF'
+        if [ "$(docker ps -a -q -f name=${{ env.PROJECT_NAME }}-nginx)" ]; then
+            echo "${{ env.PROJECT_NAME }}-nginx exist"
+            else
+              echo "create ${{ env.PROJECT_NAME }}-nginx"
+              docker create -p ${{ env.HTTP_EXPORT_PORT }}:80 --cpus=1 --memory=1G --name=${{ env.PROJECT_NAME }}-nginx \
+              --network=${{ env.PROJECT_NAME }}-network \
+              -v /home/app/${{ env.PROJECT_NAME }}/web:/usr/share/nginx/html:ro \
+              -v /home/app/${{ env.PROJECT_NAME }}/nginx.conf:/etc/nginx/conf.d/default.conf:ro \
+              nginx
+            fi
+
+          if [ "$(docker ps -a -q -f name=${{ env.PROJECT_NAME }}-db)" ]; then
+              echo "${{ env.PROJECT_NAME }}-db exist"
+            else
+              echo "create ${{ env.PROJECT_NAME }}-db"
+              docker create --cpus=1 --memory=2G --name=${{ env.PROJECT_NAME }}-db \
+              -p ${{ env.DB_EXPORT_PORT }}:3306 \
+              --network=${{ env.PROJECT_NAME }}-network \
+              -e MYSQL_ROOT_PASSWORD=${{ env.DB_ROOT_PASSWORD }} -e MYSQL_DATABASE=${{ env.DB_NAME }} \
+              -e MYSQL_USER=${{ env.DB_USER }} -e MYSQL_PASSWORD=${{ env.DB_PASSWORD }} \
+              -v /home/app/${{ env.PROJECT_NAME }}/db:/var/lib/mysql \
+              mysql:8.0 \
+              --character-set-server=utf8mb4 \
+              --collation-server=utf8mb4_unicode_ci
+            fi  
+
+         if [ "$(docker ps -a -q -f name=${{ env.PROJECT_NAME }}-api)" ]; then
+                echo "${{ env.PROJECT_NAME }}-api exist"
+            else
+              echo "create ${{ env.PROJECT_NAME }}-api"
+                docker create --cpus=2 --memory=4G --name=${{ env.PROJECT_NAME }}-api \
+                --network=${{ env.PROJECT_NAME }}-network \
+                --workdir=/opt/app \
+                -v /home/app/${{ env.PROJECT_NAME }}:/opt/app \
+                chenyingzhou/jdk17-mvn-git  \
+                java -jar app.jar \
+                --spring.config.location=/opt/app/
+            fi
+        EOF
