@@ -80,6 +80,6 @@ jobs:
         rm -f /home/app/${{ env.PROJECT_NAME }}/application.yml
         rm -rf /home/app/${{ env.PROJECT_NAME }}/web
         EOF
-    # - name: Copy app.jar to ECS
-    #   run: |
-    #      scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
+    - name: Copy app.jar to ECS
+      run: |
+         scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
