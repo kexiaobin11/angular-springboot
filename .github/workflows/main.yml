@@ -54,6 +54,10 @@ jobs:
       with:
         name: app-jar
         path: app.jar  # 指定下载到的路径
+        
+    - name: List downloaded files
+      run: ls -l /home/runner/work/angular-springboot/angular-springboot/
+
 
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.5.3
@@ -67,7 +71,6 @@ jobs:
         mkdir -p /home/app/${{ env.PROJECT_NAME }}
         mkdir -p /home/app/${{ env.PROJECT_NAME }}/db
         mkdir -p /home/app/${{ env.PROJECT_NAME }}/backups
-
         EOF
     - name: Clean Previous Configurations
       run: |
@@ -77,6 +80,6 @@ jobs:
         rm -f /home/app/${{ env.PROJECT_NAME }}/application.yml
         rm -rf /home/app/${{ env.PROJECT_NAME }}/web
         EOF
-    - name: Copy app.jar to ECS
-      run: |
-         scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
+    # - name: Copy app.jar to ECS
+    #   run: |
+    #      scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
