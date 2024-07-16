@@ -79,4 +79,4 @@ jobs:
         EOF
     - name: Copy app.jar to ECS
       run: |
-        scp -o StrictHostKeyChecking=no app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
+        scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
