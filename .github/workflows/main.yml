@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-jar
-          path: app.jar 
+          path: .
             
   deploy:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: app-jar
-        path: app.jar  # 指定下载到的路径
+        path: .  # 指定下载到的路径
         
     - name: List downloaded files
       run: ls -l /home/runner/work/angular-springboot/angular-springboot/
@@ -80,6 +80,6 @@ jobs:
         rm -f /home/app/${{ env.PROJECT_NAME }}/application.yml
         rm -rf /home/app/${{ env.PROJECT_NAME }}/web
         EOF
-    - name: Copy app.jar to ECS
-      run: |
-         scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
+    # - name: Copy app.jar to ECS
+    #   run: |
+    #      scp -o StrictHostKeyChecking=no /home/runner/work/angular-springboot/angular-springboot/app.jar/app.jar root@${{ secrets.ALIYUN_SERVER_HOST }}:/home/app/${{ env.PROJECT_NAME }}/app.jar
