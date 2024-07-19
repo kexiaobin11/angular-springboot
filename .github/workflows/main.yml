@@ -120,7 +120,7 @@ jobs:
                 --network=${{ env.PROJECT_NAME }}-network \
                 --workdir=/opt/app \
                 -v /home/app/${{ env.PROJECT_NAME }}:/opt/app \
-                maven:3.8.1-openjdk-17-slim  \
+                chenyingzhou/jdk17-mvn-git  \
                 java -jar app.jar \
                 --spring.config.location=/opt/app/
             fi
